@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -15,6 +14,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import id.sch.smktelkom_mlg.tugas01.xiirpl1028.pemesanantiket.adapter.KotaAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             "Banyuwangi", "Jombang", "Nganjuk", "Ponorogo"}};
 
     ArrayList<String> listKota = new ArrayList<>();
-    ArrayAdapter<String> adapter;
+    KotaAdapter adapter;
 
 
     String[][] arKota2 = {{"Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara"},
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             "Magelang", "Yogyakarta", "Surakarta"}, {"Surabaya", "Malang", "Blitar", "Kediri",
             "Banyuwangi", "Jombang", "Nganjuk", "Ponorogo"}};
     ArrayList<String> listKota2 = new ArrayList<>();
-    ArrayAdapter<String> adapter2;
+    KotaAdapter adapter2;
 
 
     @Override
@@ -70,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
         etJam = (EditText) findViewById(R.id.editTextJam);
         bOK = (Button) findViewById(R.id.buttonOK);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listKota);
+        adapter = new KotaAdapter(this, listKota);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spKota.setAdapter(adapter);
 
-        adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listKota2);
+        adapter2 = new KotaAdapter(this, listKota2);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spKota2.setAdapter(adapter2);
 
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 listKota.clear();
                 listKota.addAll(Arrays.asList(arKota[pos]));
+                adapter.setProvinsi((String) spProvinsi.getItemAtPosition(pos));
                 adapter.notifyDataSetChanged();
                 spKota.setSelection(0);
             }
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 listKota2.clear();
                 listKota2.addAll(Arrays.asList(arKota2[pos]));
+                adapter.setProvinsi((String) spProvinsi.getItemAtPosition(pos));
                 adapter2.notifyDataSetChanged();
                 spKota2.setSelection(0);
             }
@@ -138,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 if (cbEX.isChecked()) maka += cbEX.getText() + "\n";
                 if (cbEK.isChecked()) maka += cbEK.getText() + "\n";
 
-                if (maka.length() == readlen) maka += "Tidak ada Pilihan";
+                if (maka.length() == readlen) maka += "";
 
                 tvHasil.setText(maka);
 
